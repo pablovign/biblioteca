@@ -1,5 +1,5 @@
 
-package com.psv.biblioteca;
+package com.psv.biblioteca.controladores;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
