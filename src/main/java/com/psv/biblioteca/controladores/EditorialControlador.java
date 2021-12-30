@@ -1,6 +1,7 @@
 
 package com.psv.biblioteca.controladores;
 
+import com.psv.biblioteca.entidades.Editorial;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.servicios.EditorialServicio;
 import java.util.logging.Level;
@@ -55,6 +56,50 @@ public class EditorialControlador {
             modelo.put("error", ex.getMessage());
             
             return "editoriales.html";
+        }
+    }
+    
+    @GetMapping("/borrar-editorial")
+    public String borrarEditorial(@RequestParam String id, ModelMap modelo){
+        try {
+            editorialServicio.borrarEditorial(id);
+            
+            return "redirect:/editorial/editoriales";
+        } catch (ErrorServicio e) {
+            modelo.put("errorborrar", e.getMessage());
+            
+            return "editoriales.html";
+        }
+    }
+    
+    @GetMapping("/editar-editorial")
+    public String mostrarFormularioActualizarEditoriales(String id, ModelMap modelo){
+        try {
+            Editorial editorial = editorialServicio.buscarEditorialPorId(id);
+            
+            modelo.put("editorial", editorial);
+            
+            return "form-editoriales-actualizar";
+        } catch (ErrorServicio e) {
+            modelo.put("erroreditar", e.getMessage());
+            
+            return "editoriales.html";
+        }
+    }
+    
+    @PostMapping("/editar-editorial")
+    public String actualizarEditorial(@RequestParam String id, @RequestParam String nombre, ModelMap modelo) throws ErrorServicio{
+        try {
+            editorialServicio.actualizarEditorial(id, nombre);
+            
+            return "redirect:/editorial/editoriales";
+        } catch (ErrorServicio e) {
+            Editorial editorial = editorialServicio.buscarEditorialPorId(id);
+            
+            modelo.put("editorial", editorial);
+            modelo.put("error", e.getMessage());
+            
+            return "form-editoriales-actualizar";
         }
     }
 }

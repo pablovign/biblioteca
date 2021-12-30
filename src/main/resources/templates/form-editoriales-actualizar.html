@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
     <head>
-        <title>Agregar Editorail</title>
+        <title>Editar Editorial</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSS only -->
@@ -10,13 +10,13 @@
     <body>
         <nav th:replace="/fragmentos/nav :: nav"></nav>
 
-        <h2>AGREGAR EDITORIAL</h2>
+        <h2>EDITAR EDITORIAL</h2>
 
-        <form action="/editorial/form-editoriales" method="POST">
+        <form action="" method="POST">
             <p th:if="${error != null}" th:text="${error}" style="color: red"></p>
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre de la editorial</label>
-                <input type="text" class="form-control" id="nombre" name="nombre">
+                <input type="text" class="form-control" id="nombre" name="nombre" th:value="${editorial.nombre}">
             </div>
             <button type="submit" class="btn btn-primary">Aceptar</button>
         </form>

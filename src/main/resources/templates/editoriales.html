@@ -15,6 +15,8 @@
         <a class="btn btn-primary" href="/editorial/form-editoriales" role="button">Agregar editorial</a>
 
         <p th:if="${error != null}" th:text="${error}"></p>
+        <p th:if="${errorborrar != null}" th:text="${errorborrar}"></p>
+        <p th:if="${erroreditar != null}" th:text="${erroreditar}"></p>
         
         <table class="table table-success table-striped">
             <thead>
@@ -22,6 +24,7 @@
                     <th scope="col">Id</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alta/Baja</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +35,10 @@
                         <p th:text="${editorial.alta} ? 'Alta' : 'Baja'"></p>
                         <a th:if="${editorial.alta == true}" class="btn btn-danger" th:href="@{/editorial/alta-baja-editorial(id=__${editorial.id}__)}" role="button">Dar de baja</a>
                         <a th:if="${editorial.alta == false}" class="btn btn-primary" th:href="@{/editorial/alta-baja-editorial(id=__${editorial.id}__)}" role="button">Dar de alta</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" role="button" th:href="@{/editorial/editar-editorial(id=__${editorial.id}__)}">Editar</a> - 
+                        <a class="btn btn-danger" role="button" th:href="@{/editorial/borrar-editorial(id=__${editorial.id}__)}">Eliminar</a>
                     </td>
                 </tr>
             </tbody>
