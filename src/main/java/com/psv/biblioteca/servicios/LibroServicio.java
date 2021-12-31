@@ -6,7 +6,10 @@ import com.psv.biblioteca.entidades.Editorial;
 import com.psv.biblioteca.entidades.Libro;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.repositorios.LibroRepositorio;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +44,39 @@ public class LibroServicio {
         libro.setAlta(true);
         libro.setAutor(autor);
         libro.setEditorial(editorial);
+        
+        libroRepositorio.save(libro);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Libro> leerLibros(){
+        return libroRepositorio.findAll(Sort.by(Sort.Direction.ASC, "autor.nombre"));
+    }
+    
+    @Transactional
+    public Libro buscarLibroPorId(String id) throws ErrorServicio{
+        Optional<Libro> respuesta = libroRepositorio.findById(id);
+        
+        if(respuesta.isPresent()){
+            Libro libro = respuesta.get();
+            
+            return libro;
+        }
+        else{
+            throw new ErrorServicio("No se encontró el libro solicitado.");
+        }
+    }
+    
+    @Transactional
+    public void darAltaBajaLibro(String id) throws ErrorServicio{
+        Libro libro = buscarLibroPorId(id);
+        
+        if(libro.getAlta() == true){
+            libro.setAlta(false);
+        }
+        else{
+            libro.setAlta(true);
+        }
         
         libroRepositorio.save(libro);
     }

@@ -28,7 +28,9 @@ public class LibroControlador {
     private LibroServicio libroServicio;
     
     @GetMapping("/libros")
-    public String mostrarLibros(){
+    public String mostrarLibros(ModelMap model){
+        model.put("libros", libroServicio.leerLibros());
+        
         return "libros.html";
     }
     
@@ -54,6 +56,20 @@ public class LibroControlador {
             modelo.put("editoriales", editorialServicio.leerEditoriales());
             
             return "form-agregar-libro.html";
+        }
+    }
+    
+    @GetMapping("/alta-baja-libro")
+    public String darAltaBajaLibro(String id, ModelMap modelo){
+        try{
+            libroServicio.darAltaBajaLibro(id);
+            
+            return "redirect:/libro/libros";
+        }
+        catch(ErrorServicio e){
+            modelo.put("error", e.getMessage());
+            
+            return "redirect:/libro/libros";
         }
     }
 }
