@@ -1,6 +1,8 @@
 
 package com.psv.biblioteca.controladores;
 
+import com.psv.biblioteca.entidades.Libro;
+import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.servicios.AutorServicio;
 import com.psv.biblioteca.servicios.EditorialServicio;
 import com.psv.biblioteca.servicios.LibroServicio;
@@ -39,15 +41,19 @@ public class LibroControlador {
     }
     
     @PostMapping("/form-agregar-libro")
-    public String crearLibro(@RequestParam Long isbn, @RequestParam String titulo, @RequestParam Integer anio, @RequestParam Integer ejemplares,
-            @RequestParam String idAutor, @RequestParam String idEditorial){
+    public String crearLibro(@RequestParam(required = false) Long isbn, @RequestParam String titulo, @RequestParam (required = false) Integer anio, 
+            @RequestParam (required = false) Integer ejemplares , @RequestParam String idAutor, @RequestParam String idEditorial, ModelMap modelo){
         
         try {
             libroServicio.crearLibro(isbn, titulo, anio, ejemplares, idAutor, idEditorial);
             
             return "redirect:/libro/libros";
-        } catch (Exception e) {
-            return null;
+        } catch (ErrorServicio e) {
+            modelo.put("error", e.getMessage());
+            modelo.put("autores", autorServicio.leerAutores());
+            modelo.put("editoriales", editorialServicio.leerEditoriales());
+            
+            return "form-agregar-libro.html";
         }
     }
 }

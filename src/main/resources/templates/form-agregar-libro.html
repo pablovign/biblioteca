@@ -13,6 +13,7 @@
         <h2>AGREGAR LIBRO</h2>
 
         <form action="/libro/form-agregar-libro" method="POST">
+            <p th:if="${error != null}" th:text="${error}" style="color:red"></p>
             <div class="mb-3">
                 <label for="isbn" class="form-label">ISBN</label>
                 <input type="number" class="form-control" id="isbn" name="isbn">
@@ -41,7 +42,7 @@
                     <option th:each="editorial : ${editoriales}" th:text="${editorial.nombre}" th:value="${editorial.id}"></option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Aceptar</button>
         </form>
 
         <!-- JavaScript Bundle with Popper -->
