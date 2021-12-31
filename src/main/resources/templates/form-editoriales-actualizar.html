@@ -12,8 +12,9 @@
 
         <h2>EDITAR EDITORIAL</h2>
 
-        <form action="" method="POST">
+        <form action="/editorial/editar-editorial" method="POST">
             <p th:if="${error != null}" th:text="${error}" style="color: red"></p>
+            <input type="hidden" name="id" th:value="${editorial.id}">
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre de la editorial</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" th:value="${editorial.nombre}">
