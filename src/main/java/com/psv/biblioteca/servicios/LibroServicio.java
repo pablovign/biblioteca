@@ -119,6 +119,12 @@ public class LibroServicio {
             throw new ErrorServicio("ISBN incorrecto.");
         }
         
+        for(Libro libro : leerLibros()){
+            if(libro.getIsbn().equals(isbn)){
+                throw new ErrorServicio("ISBN de libro ya ingresado.");
+            }
+        }
+        
         if(titulo == null || titulo.isEmpty()){
             throw new ErrorServicio("Ingresar título del libro.");
         }

@@ -88,5 +88,11 @@ public class AutorServicio {
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorServicio("Ingresar nombre del autor.");
         }
+        
+        for(Autor autor : leerAutores()){
+            if(nombre.equals(autor.getNombre())){
+                throw new ErrorServicio("Nombre de autor ya ingresado.");
+            }
+        }
     }
 }

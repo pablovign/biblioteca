@@ -88,5 +88,11 @@ public class EditorialServicio {
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorServicio("Ingresar nombre de la editorial.");
         }
+        
+        for(Editorial editorial : leerEditoriales()){
+            if(nombre.equals(editorial.getNombre())){
+                throw new ErrorServicio("Nombre de editorial ya ingresado.");
+            }
+        }
     }
 }
