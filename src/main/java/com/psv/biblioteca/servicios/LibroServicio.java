@@ -53,7 +53,7 @@ public class LibroServicio {
         return libroRepositorio.findAll(Sort.by(Sort.Direction.ASC, "autor.nombre"));
     }
     
-    @Transactional
+    @Transactional(readOnly = true)
     public Libro buscarLibroPorId(String id) throws ErrorServicio{
         Optional<Libro> respuesta = libroRepositorio.findById(id);
         
@@ -81,13 +81,42 @@ public class LibroServicio {
         libroRepositorio.save(libro);
     }
     
+    @Transactional
+    public void borrarLibro(String id) throws ErrorServicio{
+        Libro libro = buscarLibroPorId(id);
+        
+        libroRepositorio.delete(libro);
+    }
+    
+    @Transactional
+    public void actualizarLibro(String id, Long isbn, String titulo, Integer anio, Integer ejemplares, String idAutor, String idEditorial) throws ErrorServicio{
+        validar(isbn, titulo, anio, ejemplares);
+        
+        Libro libro = buscarLibroPorId(id);
+        
+        libro.setIsbn(isbn);
+        libro.setTitulo(titulo);
+        libro.setAnio(anio);
+        libro.setEjemplares(ejemplares);
+        libro.setEjemplaresRestantes(ejemplares - libro.getEjemplaresPrestados());
+        libro.setAlta(true);
+        
+        Autor autor = autorServicio.buscarAutorPorId(idAutor);
+        libro.setAutor(autor);
+        
+        Editorial editorial = editorialServicio.buscarEditorialPorId(idEditorial);
+        libro.setEditorial(editorial);
+        
+        libroRepositorio.save(libro);
+    }
+    
     public void validar(Long isbn, String titulo, Integer anio, Integer ejemplares) throws ErrorServicio{
         if(isbn == null){
             throw new ErrorServicio("Ingresar ISBN del libro.");
         }
         
         if(isbn < 0){
-            throw new ErrorServicio("Ingresar ISBN positivo del libro.");
+            throw new ErrorServicio("ISBN incorrecto.");
         }
         
         if(titulo == null || titulo.isEmpty()){
@@ -99,7 +128,7 @@ public class LibroServicio {
         }
         
         if(anio < 0){
-            throw new ErrorServicio("Ingresar año positivo del libro.");
+            throw new ErrorServicio("Año incorrecto.");
         }
         
         if(ejemplares == null){
@@ -107,7 +136,7 @@ public class LibroServicio {
         }
         
         if(ejemplares < 0){
-            throw new ErrorServicio("Ingresar ejemplares positivos del libro.");
+            throw new ErrorServicio("Ejemplares incorrectos.");
         }
     }
 }

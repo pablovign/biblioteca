@@ -29,6 +29,7 @@
                     <th scope="col">P</th>
                     <th scope="col">R</th>
                     <th scope="col">A/B</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,10 @@
                         <p th:text="${libro.alta ? 'A' : 'B'}"></p>
                         <a class="btn btn-danger" th:href="@{/libro/alta-baja-libro(id=__${libro.id}__)}" role="button" th:if="${libro.alta == true}">B</a>
                         <a class="btn btn-primary" th:href="@{/libro/alta-baja-libro(id=__${libro.id}__)}" th:if="${libro.alta == false}">A</a>    
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{/libro/form-actualizar-libro(id=__${libro.id}__)}" role="button">Editar</a> - 
+                        <a class="btn btn-danger" th:href="@{/libro/borrar-libro(id=__${libro.id}__)}" role="button">Eliminar</a>
                     </td>
                 </tr>
         </table>

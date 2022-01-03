@@ -32,35 +32,38 @@ public class EditorialServicio {
     public List<Editorial> leerEditoriales() {
         return editorialRepositorio.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
     }
-
-    @Transactional
-    public void darAltaBajaEditorial(String id) throws ErrorServicio {
+    
+    @Transactional(readOnly = true)
+    public Editorial buscarEditorialPorId(String id) throws ErrorServicio {
         Optional<Editorial> respuesta = editorialRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
             Editorial editorial = respuesta.get();
 
-            if (editorial.getAlta()) {
-                editorial.setAlta(false);
-            } else {
-                editorial.setAlta(true);
-            }
-
-            editorialRepositorio.save(editorial);
+            return editorial;
         } else {
             throw new ErrorServicio("No se encontró la editorial solicitada.");
         }
     }
 
     @Transactional
-    public void borrarEditorial(String id) throws ErrorServicio {
-        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+    public void darAltaBajaEditorial(String id) throws ErrorServicio {
+        Editorial editorial = buscarEditorialPorId(id);
 
-        if (respuesta.isPresent()) {
-            editorialRepositorio.deleteById(id);
+        if (editorial.getAlta()) {
+            editorial.setAlta(false);
         } else {
-            throw new ErrorServicio("No se encontró la editorial solicitada.");
+            editorial.setAlta(true);
         }
+
+        editorialRepositorio.save(editorial);
+    }
+
+    @Transactional
+    public void borrarEditorial(String id) throws ErrorServicio {
+        Editorial editorial = buscarEditorialPorId(id);
+
+        editorialRepositorio.delete(editorial);
     }
 
     @Transactional
@@ -74,23 +77,9 @@ public class EditorialServicio {
 
             editorial.setNombre(nombre);
             editorial.setAlta(true);
-            
+
             editorialRepositorio.save(editorial);
-        }
-        else{
-            throw new ErrorServicio("No se encontró la editorial solicitada.");
-        }
-    }
-    
-    public Editorial buscarEditorialPorId(String id) throws ErrorServicio{
-        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
-
-        if (respuesta.isPresent()) {
-            Editorial editorial = respuesta.get();
-
-            return editorial;
-        }
-        else{
+        } else {
             throw new ErrorServicio("No se encontró la editorial solicitada.");
         }
     }

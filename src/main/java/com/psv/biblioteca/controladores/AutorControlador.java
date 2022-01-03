@@ -75,15 +75,18 @@ public class AutorControlador {
     }
     
     @PostMapping("/form-actualizar-autor/{id}")
-    public String actualizarAutor(@PathVariable String id, @RequestParam String nombre, ModelMap modelo){
+    public String actualizarAutor(@PathVariable String id, @RequestParam String nombre, ModelMap modelo) throws ErrorServicio{
         try {
             autorServicio.actualizarAutor(id, nombre);
             
             return "redirect:/autor/autores";
         } catch (ErrorServicio e) {
+            Autor autor = autorServicio.buscarAutorPorId(id);
+            
+            modelo.put("autor", autor);
             modelo.put("error", e.getMessage());
             
-            return "redirect:/autor/autores";
+            return "form-actualizar-autor.html";
         }
     }
     

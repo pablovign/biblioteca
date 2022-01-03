@@ -39,7 +39,7 @@ public class EditorialControlador {
             editorialServicio.crearEditorial(nombre);
             
             return "redirect:/editorial/editoriales";
-        } catch (Exception e) {
+        } catch (ErrorServicio e) {
             modelo.put("error", e.getMessage());
             
             return "form-editoriales.html";
@@ -55,7 +55,7 @@ public class EditorialControlador {
         } catch (ErrorServicio ex) {
             modelo.put("error", ex.getMessage());
             
-            return "editoriales.html";
+            return "redirect:/editorial/editoriales";
         }
     }
     
@@ -68,7 +68,7 @@ public class EditorialControlador {
         } catch (ErrorServicio e) {
             modelo.put("errorborrar", e.getMessage());
             
-            return "editoriales.html";
+            return "redirect:/editorial/editoriales";
         }
     }
     
@@ -99,7 +99,7 @@ public class EditorialControlador {
             modelo.put("editorial", editorial);
             modelo.put("error", e.getMessage());
             
-            return "form-editoriales-actualizar";
+            return "form-editoriales-actualizar.html";
         }
     }
 }
