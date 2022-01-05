@@ -1,10 +1,12 @@
 
 package com.psv.biblioteca.entidades;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -15,11 +17,12 @@ public class Editorial {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     
-    @Column(unique=true)
+    @Column(unique=true, nullable=false)
     private String nombre;
     
+    @Column(nullable=false)
     private Boolean alta;
-
+    
     public String getId() {
         return id;
     }

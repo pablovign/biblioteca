@@ -4,8 +4,6 @@ package com.psv.biblioteca.controladores;
 import com.psv.biblioteca.entidades.Editorial;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.servicios.EditorialServicio;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

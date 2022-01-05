@@ -36,15 +36,15 @@ public class LibroControlador {
 
     @GetMapping("/form-agregar-libro")
     public String mostrarFormAgregarLibro(ModelMap modelo) {
-        modelo.put("autores", autorServicio.leerAutores());
-        modelo.put("editoriales", editorialServicio.leerEditoriales());
+        modelo.put("autores", autorServicio.buscarAutoresAlta());
+        modelo.put("editoriales", editorialServicio.buscarEditorialesAlta());
 
         return "form-agregar-libro.html";
     }
 
     @PostMapping("/form-agregar-libro")
     public String crearLibro(@RequestParam(required = false) Long isbn, @RequestParam String titulo, @RequestParam(required = false) Integer anio,
-            @RequestParam(required = false) Integer ejemplares, @RequestParam String idAutor, @RequestParam String idEditorial, ModelMap modelo) {
+            @RequestParam(required = false) Integer ejemplares, @RequestParam(required = false) String idAutor, @RequestParam(required = false) String idEditorial, ModelMap modelo) {
 
         try {
             libroServicio.crearLibro(isbn, titulo, anio, ejemplares, idAutor, idEditorial);
@@ -52,8 +52,8 @@ public class LibroControlador {
             return "redirect:/libro/libros";
         } catch (ErrorServicio e) {
             modelo.put("error", e.getMessage());
-            modelo.put("autores", autorServicio.leerAutores());
-            modelo.put("editoriales", editorialServicio.leerEditoriales());
+            modelo.put("autores", autorServicio.buscarAutoresAlta());
+            modelo.put("editoriales", editorialServicio.buscarEditorialesAlta());
 
             return "form-agregar-libro.html";
         }
@@ -89,8 +89,8 @@ public class LibroControlador {
     public String mostrarFormActualizarLibro(String id, ModelMap modelo) throws ErrorServicio {
         try {
             modelo.put("libro", libroServicio.buscarLibroPorId(id));
-            modelo.put("autores", autorServicio.leerAutores());
-            modelo.put("editoriales", editorialServicio.leerEditoriales());
+            modelo.put("autores", autorServicio.buscarAutoresAlta());
+            modelo.put("editoriales", editorialServicio.buscarEditorialesAlta());
 
             return "form-actualizar-libro";
         } catch (ErrorServicio e) {
@@ -104,8 +104,8 @@ public class LibroControlador {
 
     @PostMapping("/form-actualizar-libro/{id}")
     public String actualizarLibro(@PathVariable String id, @RequestParam(required = false) Long isbn, @RequestParam String titulo,
-            @RequestParam(required = false) Integer anio, @RequestParam(required = false) Integer ejemplares, @RequestParam String idAutor,
-            @RequestParam String idEditorial, ModelMap modelo) throws ErrorServicio {
+            @RequestParam(required = false) Integer anio, @RequestParam(required = false) Integer ejemplares, @RequestParam(required = false) String idAutor,
+            @RequestParam(required = false) String idEditorial, ModelMap modelo) throws ErrorServicio {
         try {
             libroServicio.actualizarLibro(id, isbn, titulo, anio, ejemplares, idAutor, idEditorial);
 
@@ -114,8 +114,8 @@ public class LibroControlador {
             Libro libro = libroServicio.buscarLibroPorId(id);
 
             modelo.put("libro", libro);
-            modelo.put("autores", autorServicio.leerAutores());
-            modelo.put("editoriales", editorialServicio.leerEditoriales());
+            modelo.put("autores", autorServicio.buscarAutoresAlta());
+            modelo.put("editoriales", editorialServicio.buscarEditorialesAlta());
             modelo.put("error", e.getMessage());
 
             return "form-actualizar-libro.html";

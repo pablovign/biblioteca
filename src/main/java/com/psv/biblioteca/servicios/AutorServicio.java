@@ -83,6 +83,11 @@ public class AutorServicio {
             throw new ErrorServicio("No se encontró el autor solicitado.");
         }
     }
+    
+     @Transactional(readOnly = true)
+    public List<Autor> buscarAutoresAlta(){
+        return autorRepositorio.buscarAutoresAlta();
+    }
 
     public void validar(String nombre) throws ErrorServicio {
         if (nombre == null || nombre.isEmpty()) {

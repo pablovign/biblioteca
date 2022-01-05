@@ -15,9 +15,10 @@ public class Autor {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     
-    @Column(unique=true)
+    @Column(unique=true, nullable=false)
     private String nombre;
     
+    @Column(nullable=false)
     private Boolean alta;
 
     public String getId() {

@@ -60,7 +60,7 @@ public class EditorialServicio {
     }
 
     @Transactional
-    public void borrarEditorial(String id) throws ErrorServicio {
+    public void borrarEditorial(String id) throws ErrorServicio{
         Editorial editorial = buscarEditorialPorId(id);
 
         editorialRepositorio.delete(editorial);
@@ -82,6 +82,11 @@ public class EditorialServicio {
         } else {
             throw new ErrorServicio("No se encontró la editorial solicitada.");
         }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Editorial> buscarEditorialesAlta(){
+        return editorialRepositorio.buscarEditorialesAlta();
     }
 
     public void validar(String nombre) throws ErrorServicio {

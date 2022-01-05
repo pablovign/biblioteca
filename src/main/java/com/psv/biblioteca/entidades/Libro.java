@@ -1,6 +1,7 @@
 
 package com.psv.biblioteca.entidades;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,16 +20,22 @@ public class Libro {
     @Column(unique=true, nullable=false)
     private Long isbn;
     
+    @Column(nullable=false)
     private String titulo;
     
+    @Column(nullable=false)
     private Integer anio;
     
+    @Column(nullable=false)
     private Integer ejemplares;
     
+    @Column(nullable=false)
     private Integer ejemplaresPrestados;
     
+    @Column(nullable=false)
     private Integer ejemplaresRestantes;
     
+    @Column(nullable=false)
     private Boolean alta;
     
     @ManyToOne
