@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/cliente")
@@ -19,7 +20,9 @@ public class ClienteControlador {
     private ClienteServicio clienteServicio;
     
     @GetMapping("/clientes")
-    public String mostrarPagClientes(){
+    public String mostrarPagClientes(ModelMap modelo){
+        modelo.put("clientes", clienteServicio.buscarClientes());
+        
         return "clientes.html";
     }
     
@@ -29,10 +32,10 @@ public class ClienteControlador {
     }
     
     @PostMapping("/form-cliente")
-    public String crearCliente(@RequestParam(required = false) Long documento, @RequestParam String nombre, @RequestParam String apellido, 
-            @RequestParam(required = false) String telefono, ModelMap modelo){
+    public String crearCliente(MultipartFile archivo, @RequestParam(required = false) Long documento, @RequestParam String nombre, 
+            @RequestParam String apellido, @RequestParam(required = false) String telefono, ModelMap modelo){
         try{
-            clienteServicio.guardarCliente(documento, nombre, apellido, telefono);
+            clienteServicio.guardarCliente(archivo, documento, nombre, apellido, telefono);
             
             return "redirect:/cliente/clientes";
         }

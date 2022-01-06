@@ -1,6 +1,7 @@
 package com.psv.biblioteca.servicios;
 
 import com.psv.biblioteca.entidades.Cliente;
+import com.psv.biblioteca.entidades.Foto;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.repositorios.ClienteRepositorio;
 import java.util.List;
@@ -9,12 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteServicio {
 
     @Autowired
     private ClienteRepositorio clienteRepositorio;
+    
+    @Autowired
+    private FotoServicio fotoServicio;
 
     @Transactional(readOnly = true)
     public Cliente buscarClienteId(String id) throws ErrorServicio {
@@ -40,7 +45,7 @@ public class ClienteServicio {
     }
 
     @Transactional
-    public void guardarCliente(Long documento, String nombre, String apellido, String telefono) throws ErrorServicio {
+    public void guardarCliente(MultipartFile archivo, Long documento, String nombre, String apellido, String telefono) throws ErrorServicio {
         validar(documento, nombre, apellido);
 
         Cliente cliente = new Cliente();
@@ -50,6 +55,9 @@ public class ClienteServicio {
         cliente.setApellido(apellido);
         cliente.setTelefono(telefono);
         cliente.setAlta(true);
+        
+        Foto foto = fotoServicio.guardarFoto(archivo);
+        cliente.setFoto(foto);
 
         clienteRepositorio.save(cliente);
     }

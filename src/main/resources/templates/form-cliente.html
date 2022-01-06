@@ -12,7 +12,7 @@
 
         <h2>AGREGAR CLIENTE</h2>
 
-        <form action="/cliente/form-cliente" method="POST">
+        <form action="/cliente/form-cliente" method="POST" enctype="multipart/form-data">
             <p th:if="${error != null}" th:text="${error}" style="color:red"></p>
             <div class="mb-3">
                 <label for="documento" class="form-label">Documento</label>
@@ -29,6 +29,10 @@
             <div class="mb-3">
                 <label for="telefono" class="form-label">Teléfono</label>
                 <input type="text" class="form-control" id="telefono" name="telefono">
+            </div>
+            <div class="mb-3">
+                <label for="archivo" class="form-label">Foto</label>
+                <input type="file" class="form-control" id="archivo" name="archivo">
             </div>
             <button type="submit" class="btn btn-primary">Aceptar</button>
         </form>
