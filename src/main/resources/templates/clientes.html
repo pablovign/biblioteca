@@ -19,11 +19,11 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Foto</th>
-                    <th scope="col">Documento</th>
+                    <th scope="col">Doc.</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alta</th>
-                    <th scope="col">Teléfono</th>
+                    <th scope="col">Tel.</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,11 @@
                     <td th:text="${cliente.documento}"></td>
                     <td th:text="${cliente.apellido}"></td>
                     <td th:text="${cliente.nombre}"></td>
-                    <td th:text="${cliente.alta}"></td>
+                    <td>
+                        <p th:text="${cliente.alta} ? 'A' : 'B'"></p>
+                        <a th:if="${cliente.alta == true}" class="btn btn-danger" th:href="@{/cliente/dar-alta-baja/__${cliente.id}__}" role="button">B</a>
+                        <a th:if="${cliente.alta == false}" class="btn btn-primary" th:href="@{/cliente/dar-alta-baja/__${cliente.id}__}" role="button">A</a>
+                    </td>
                     <td th:text="${cliente.telefono}"></td>
                 </tr>
             </tbody>

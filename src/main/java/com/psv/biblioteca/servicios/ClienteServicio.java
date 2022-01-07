@@ -61,6 +61,18 @@ public class ClienteServicio {
 
         clienteRepositorio.save(cliente);
     }
+    
+    @Transactional
+    public void darAltaBajaCliente(String id) throws ErrorServicio{
+        Cliente cliente = buscarClienteId(id);
+        
+        if(cliente.getAlta() == true){
+            cliente.setAlta(false);
+        }
+        else{
+            cliente.setAlta(true);
+        }
+    }
 
     public void validar(Long documento, String nombre, String apellido) throws ErrorServicio {
         if (documento == null) {
