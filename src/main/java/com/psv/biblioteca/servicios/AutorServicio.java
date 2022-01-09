@@ -1,6 +1,7 @@
 package com.psv.biblioteca.servicios;
 
 import com.psv.biblioteca.entidades.Autor;
+import com.psv.biblioteca.entidades.Editorial;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.repositorios.AutorRepositorio;
 import java.util.List;
@@ -19,6 +20,8 @@ public class AutorServicio {
     @Transactional
     public void crearAutor(String nombre) throws ErrorServicio {
         validar(nombre);
+        
+        validarUnico(null, nombre);
 
         Autor autor = new Autor();
 
@@ -70,6 +73,8 @@ public class AutorServicio {
     public void actualizarAutor(String id, String nombre) throws ErrorServicio {
         validar(nombre);
 
+        validarUnico(id, nombre);
+        
         Optional<Autor> respuesta = autorRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
@@ -93,10 +98,24 @@ public class AutorServicio {
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorServicio("Ingresar nombre del autor.");
         }
-        
-        for(Autor autor : leerAutores()){
-            if(nombre.equals(autor.getNombre())){
-                throw new ErrorServicio("Nombre de autor ya ingresado.");
+    }
+    
+    public void validarUnico(String id, String nombre) throws ErrorServicio {
+        if (id == null) {
+            for (Autor autor : leerAutores()) {
+                if (nombre.equals(autor.getNombre())) {
+                    throw new ErrorServicio("Nombre de autor ya ingresado.");
+                }
+            }
+        } else {
+            Autor autor = buscarAutorPorId(id);
+
+            if (!autor.getNombre().equals(nombre)) {
+                for (Autor elemento : leerAutores()) {
+                    if (nombre.equals(elemento.getNombre())) {
+                        throw new ErrorServicio("Nombre de autor ya ingresado.");
+                    }
+                }
             }
         }
     }

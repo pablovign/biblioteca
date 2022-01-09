@@ -27,6 +27,8 @@ public class LibroServicio {
     @Transactional
     public void crearLibro(Long isbn, String titulo, Integer anio, Integer ejemplares, String idAutor, String idEditorial) throws ErrorServicio {
         validar(isbn, titulo, anio, ejemplares, idEditorial, idAutor);
+        
+        validarUnico(null, isbn);
 
         Autor autor = autorServicio.buscarAutorPorId(idAutor);
 
@@ -88,6 +90,8 @@ public class LibroServicio {
     @Transactional
     public void actualizarLibro(String id, Long isbn, String titulo, Integer anio, Integer ejemplares, String idAutor, String idEditorial) throws ErrorServicio {
         validar(isbn, titulo, anio, ejemplares, idEditorial, idAutor);
+        
+        validarUnico(id, isbn);
 
         Libro libro = buscarLibroPorId(id);
 
@@ -116,12 +120,6 @@ public class LibroServicio {
             throw new ErrorServicio("ISBN incorrecto.");
         }
 
-        for (Libro libro : leerLibros()) {
-            if (libro.getIsbn().equals(isbn)) {
-                throw new ErrorServicio("ISBN de libro ya ingresado.");
-            }
-        }
-
         if (titulo == null || titulo.isEmpty()) {
             throw new ErrorServicio("Ingresar título del libro.");
         }
@@ -148,6 +146,26 @@ public class LibroServicio {
         
         if (idEditorial == null || idEditorial.isEmpty()) {
             throw new ErrorServicio("Ingresar la editorial del libro.");
+        }
+    }
+    
+    public void validarUnico(String id, Long isbn) throws ErrorServicio{
+        if (id == null) {
+            for (Libro libro : leerLibros()) {
+                if (isbn.equals(libro.getIsbn())) {
+                    throw new ErrorServicio("ISBN de libro ya ingresado.");
+                }
+            }
+        } else {
+            Libro libro = buscarLibroPorId(id);
+
+            if (!libro.getIsbn().equals(isbn)) {
+                for (Libro elemento : leerLibros()) {
+                    if (isbn.equals(elemento.getIsbn())) {
+                        throw new ErrorServicio("ISBN de libro ya ingresado.");
+                    }
+                }
+            }
         }
     }
 }

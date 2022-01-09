@@ -19,6 +19,8 @@ public class EditorialServicio {
     @Transactional
     public void crearEditorial(String nombre) throws ErrorServicio {
         validar(nombre);
+        
+        validarUnico(null, nombre);
 
         Editorial editorial = new Editorial();
 
@@ -32,7 +34,7 @@ public class EditorialServicio {
     public List<Editorial> leerEditoriales() {
         return editorialRepositorio.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
     }
-    
+
     @Transactional(readOnly = true)
     public Editorial buscarEditorialPorId(String id) throws ErrorServicio {
         Optional<Editorial> respuesta = editorialRepositorio.findById(id);
@@ -60,7 +62,7 @@ public class EditorialServicio {
     }
 
     @Transactional
-    public void borrarEditorial(String id) throws ErrorServicio{
+    public void borrarEditorial(String id) throws ErrorServicio {
         Editorial editorial = buscarEditorialPorId(id);
 
         editorialRepositorio.delete(editorial);
@@ -69,6 +71,8 @@ public class EditorialServicio {
     @Transactional
     public void actualizarEditorial(String id, String nombre) throws ErrorServicio {
         validar(nombre);
+        
+        validarUnico(id, nombre);
 
         Optional<Editorial> respuesta = editorialRepositorio.findById(id);
 
@@ -83,9 +87,9 @@ public class EditorialServicio {
             throw new ErrorServicio("No se encontró la editorial solicitada.");
         }
     }
-    
+
     @Transactional(readOnly = true)
-    public List<Editorial> buscarEditorialesAlta(){
+    public List<Editorial> buscarEditorialesAlta() {
         return editorialRepositorio.buscarEditorialesAlta();
     }
 
@@ -93,10 +97,24 @@ public class EditorialServicio {
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorServicio("Ingresar nombre de la editorial.");
         }
-        
-        for(Editorial editorial : leerEditoriales()){
-            if(nombre.equals(editorial.getNombre())){
-                throw new ErrorServicio("Nombre de editorial ya ingresado.");
+    }
+
+    public void validarUnico(String id, String nombre) throws ErrorServicio {
+        if (id == null) {
+            for (Editorial editorial : leerEditoriales()) {
+                if (nombre.equals(editorial.getNombre())) {
+                    throw new ErrorServicio("Nombre de editorial ya ingresado.");
+                }
+            }
+        } else {
+            Editorial editorial = buscarEditorialPorId(id);
+
+            if (!editorial.getNombre().equals(nombre)) {
+                for (Editorial elemento : leerEditoriales()) {
+                    if (nombre.equals(elemento.getNombre())) {
+                        throw new ErrorServicio("Nombre de editorial ya ingresado.");
+                    }
+                }
             }
         }
     }
