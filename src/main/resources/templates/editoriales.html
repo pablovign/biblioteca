@@ -21,7 +21,6 @@
         <table class="table table-success table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alta/Baja</th>
                     <th scope="col">Acciones</th>
@@ -29,7 +28,6 @@
             </thead>
             <tbody>
                 <tr th:each="editorial : ${editoriales}">
-                    <td th:text="${editorial.id}"></td>
                     <td th:text="${editorial.nombre}"></td>
                     <td>
                         <p th:text="${editorial.alta} ? 'Alta' : 'Baja'"></p>

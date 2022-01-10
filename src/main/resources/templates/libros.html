@@ -19,7 +19,6 @@
         <table class="table table-success table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Autor</th>
                     <th scope="col">Título</th>
                     <th scope="col">ISBN</th>
@@ -34,7 +33,6 @@
             </thead>
             <tbody>
                 <tr th:each="libro : ${libros}">
-                    <td th:text="${libro.id}"></td>
                     <td th:text="${libro.autor.nombre}"></td>
                     <td th:text="${libro.titulo}"></td>
                     <td th:text="${libro.isbn}"></td>

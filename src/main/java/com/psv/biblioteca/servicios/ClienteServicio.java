@@ -2,6 +2,7 @@ package com.psv.biblioteca.servicios;
 
 import com.psv.biblioteca.entidades.Cliente;
 import com.psv.biblioteca.entidades.Foto;
+import com.psv.biblioteca.entidades.Libro;
 import com.psv.biblioteca.errores.ErrorServicio;
 import com.psv.biblioteca.repositorios.ClienteRepositorio;
 import java.util.List;
@@ -47,6 +48,8 @@ public class ClienteServicio {
     @Transactional
     public void guardarCliente(MultipartFile archivo, Long documento, String nombre, String apellido, String telefono) throws ErrorServicio {
         validar(documento, nombre, apellido);
+        
+        validarUnico(null, documento);
 
         Cliente cliente = new Cliente();
 
@@ -73,6 +76,31 @@ public class ClienteServicio {
             cliente.setAlta(true);
         }
     }
+    
+        
+    @Transactional
+    public void borrarCliente(String id) throws ErrorServicio{
+        Cliente cliente = buscarClienteId(id);
+        
+        clienteRepositorio.delete(cliente);
+    }
+    
+    @Transactional
+    public void actualizarCliente(String id, Long documento, String nombre, String apellido, String telefono) throws ErrorServicio{
+        validar(documento, nombre, apellido);
+        
+        validarUnico(id, documento);
+        
+        Cliente cliente = buscarClienteId(id);
+        
+        cliente.setDocumento(documento);
+        cliente.setNombre(nombre);
+        cliente.setApellido(apellido);
+        cliente.setTelefono(telefono);
+        cliente.setAlta(true);
+        
+        clienteRepositorio.save(cliente);
+    }
 
     public void validar(Long documento, String nombre, String apellido) throws ErrorServicio {
         if (documento == null) {
@@ -95,6 +123,26 @@ public class ClienteServicio {
 
         if (apellido.isEmpty() || apellido == null) {
             throw new ErrorServicio("Ingresar apellido del cliente.");
+        }
+    }
+    
+    public void validarUnico(String id, Long documento) throws ErrorServicio{
+        if (id == null) {
+            for (Cliente cliente : buscarClientes()) {
+                if (documento.equals(cliente.getDocumento())) {
+                    throw new ErrorServicio("Documento de cliente ya ingresado.");
+                }
+            }
+        } else {
+            Cliente cliente = buscarClienteId(id);
+
+            if (!cliente.getDocumento().equals(documento)) {
+                for (Cliente elemento : buscarClientes()) {
+                    if (documento.equals(elemento.getDocumento())) {
+                        throw new ErrorServicio("Documento de cliente ya ingresado.");
+                    }
+                }
+            }
         }
     }
 }

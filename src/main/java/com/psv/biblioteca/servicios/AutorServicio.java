@@ -62,7 +62,7 @@ public class AutorServicio {
         autorRepositorio.save(autor);
     }
     
-      @Transactional
+    @Transactional
     public void borrarAutor(String id) throws ErrorServicio {
         Autor autor = buscarAutorPorId(id);
 

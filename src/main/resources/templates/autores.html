@@ -19,7 +19,6 @@
         <table class="table table-success table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alta/Baja</th>
                     <th scope="col">Acciones</th>
@@ -27,7 +26,6 @@
             </thead>
             <tbody>
                 <tr th:each="autor : ${autores}">
-                    <td th:text="${autor.id}"></td>
                     <td th:text="${autor.nombre}"></td>
                     <td>
                         <p th:text="${autor.alta ? 'Alta' : 'Baja'}"></p>

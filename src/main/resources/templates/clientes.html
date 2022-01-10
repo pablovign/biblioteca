@@ -17,18 +17,17 @@
         <table class="table table-success table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Foto</th>
                     <th scope="col">Doc.</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Alta</th>
                     <th scope="col">Tel.</th>
+                    <th scope="col">A/B</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="cliente : ${clientes}">
-                    <td th:text="${cliente.id}"></td>
                     <td><img th:if="${cliente.foto != null}" class="img-fluid rounded-circle" th:src="${'/foto/mostrar-foto/' + cliente.id}" style="max-height: 100px"></td>
                     <td th:text="${cliente.documento}"></td>
                     <td th:text="${cliente.apellido}"></td>
@@ -38,6 +37,9 @@
                         <p th:text="${cliente.alta} ? 'A' : 'B'"></p>
                         <a th:if="${cliente.alta == true}" class="btn btn-danger" th:href="@{/cliente/dar-alta-baja/__${cliente.id}__}" role="button">B</a>
                         <a th:if="${cliente.alta == false}" class="btn btn-primary" th:href="@{/cliente/dar-alta-baja/__${cliente.id}__}" role="button">A</a>
+                    </td>
+                    <td> 
+                        <a class="btn btn-danger" role="button" th:href="@{/cliente/borrar-cliente/__${cliente.id}__}">Eliminar</a>
                     </td>
                 </tr>
             </tbody>
